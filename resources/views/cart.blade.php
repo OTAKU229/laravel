@@ -2,63 +2,118 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Panier</title>
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(120deg, #f4f2fb, #ece9f7);
+            margin: 0;
+            padding: 0;
         }
+
+        h1 {
+            text-align: center;
+            margin: 30px 0;
+            color: #3b2f63;
+        }
+
+        .cart-container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
         .cart-item {
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
         }
-        .remove-button {
-            padding: 5px 10px;
-            background-color: #dc3545;
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item strong {
+            color: #3b2f63;
+        }
+
+        .remove-btn {
+            padding: 8px 14px;
+            background: #dc3545;
             color: white;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: 0.3s;
         }
-        .remove-button:hover {
-            background-color: #b02a37;
+
+        .remove-btn:hover {
+            background: #b52a37;
         }
-        .back-button {
-            display: inline-block;
-            padding: 10px 15px;
-            background-color: #007bff;
+
+        .empty {
+            text-align: center;
+            color: #777;
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .back-btn {
+            padding: 12px 22px;
+            background: #6a5acd;
             color: white;
             text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
+            border-radius: 30px;
+            transition: 0.3s;
         }
-        .back-button:hover {
-            background-color: #0056b3;
+
+        .back-btn:hover {
+            background: #5848b8;
         }
     </style>
 </head>
 <body>
-    <h1>Mon Panier</h1>
 
-    @if(count($cart) > 0)
-        @foreach($cart as $product)
-            <div class="cart-item">
-                <div>
-                    <strong>{{ $product->name }}</strong> - {{ $product->price }} €
-                </div>
-                <a href="{{ route('cart.remove', $product->id) }}" class="remove-button">Supprimer</a>
-            </div>
-        @endforeach
+<h1>Mon panier</h1>
+
+<div class="cart-container">
+
+    @if(!empty($cart) && count($cart) > 0)
+
+      @foreach($cart as $item)
+    <div class="cart-item">
+        <div>
+            <strong>{{ $item['name'] }}</strong>
+            - {{ number_format($item['price'], 0, ',', ' ') }} FCFA
+        </div>
+
+        <a href="{{ route('cart.remove', $item['id']) }}" class="remove-btn">
+            Supprimer
+        </a>
+    </div>
+@endforeach
+
+
     @else
-        <p>Votre panier est vide.</p>
+        <p class="empty">Votre panier est vide.</p>
     @endif
 
-  <a href="{{ route('products.index') }}" class="back-button">Retour aux produits</a>
+    <div class="actions">
+        <a href="{{ route('products.index') }}" class="back-btn">
+            ⬅ Retour aux produits
+        </a>
+    </div>
+
+</div>
 
 </body>
 </html>
